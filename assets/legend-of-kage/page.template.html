@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#121613">
+  <title>影子传说 · THE LEGEND OF KAGE</title>
+  <style>
+    :root{color-scheme:dark;--ink:#121613;--paper:#e8e5d6;--muted:#92998b;--red:#df503c;--line:#343b30;--gold:#d9b768}
+    *{box-sizing:border-box}body{margin:0;background:var(--ink);color:var(--paper);font:14px/1.6 "Courier New","Songti SC",serif;min-height:100svh}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23fff' filter='url(%23n)' opacity='.7' d='M0 0h180v180H0z'/%3E%3C/svg%3E")}
+    button{font:inherit;color:inherit;cursor:pointer}button:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offset:5px}button:disabled{opacity:.35;cursor:default}
+    .page{width:min(1120px,calc(100% - 72px));margin:auto}header{height:106px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+    .brand{display:flex;align-items:center;gap:17px}.seal{background:var(--red);color:var(--ink);height:40px;width:40px;display:grid;place-items:center;font:900 25px "Songti SC",serif;border-radius:50%}.brand h1{font:700 23px "Songti SC","Noto Serif CJK SC",serif;letter-spacing:5px;margin:0}.brand small{font-size:9px;letter-spacing:2.5px;color:var(--muted)}
+    .edition{font-size:10px;letter-spacing:2px;color:var(--muted);text-align:right}.edition b{display:block;color:var(--paper);font-weight:400;font-size:12px;letter-spacing:3px;margin-bottom:3px}
+    .toolbar{height:62px;display:flex;align-items:center;justify-content:space-between;gap:12px}.chapter{display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:2px}.dot{width:6px;height:6px;background:var(--red);box-shadow:0 0 10px #df503c44}.tools{display:flex;gap:19px}.tool{border:0;background:none;padding:6px 0;color:var(--muted);font-size:11px;letter-spacing:1px}.tool:hover{color:var(--paper)}.tool svg{vertical-align:-3px;margin-right:6px}
+    .cabinet{position:relative;background:#050805;padding:11px;border:1px solid #3a4134;box-shadow:0 20px 60px #0005;margin:auto;width:min(100%,calc((100svh - 300px)*4/3 + 24px));min-width:520px}
+    .screen{position:relative;aspect-ratio:4/3;overflow:hidden;background:#8284d6}.screen:after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,#00000016 0,#00000016 1px,transparent 1px,transparent 3px);z-index:3;box-shadow:inset 0 0 25px #0003}
+    canvas{width:100%;height:100%;display:block;image-rendering:pixelated;image-rendering:crisp-edges;outline:0;touch-action:none}
+    .overlay{position:absolute;inset:0;z-index:4;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;background:#10192551;text-shadow:2px 2px #11192d;pointer-events:none}.overlay[hidden]{display:none}.overlay>*{pointer-events:auto}.eyebrow{font-size:10px;letter-spacing:5px;color:#faf5db;margin-bottom:14px}.game-title{font-family:"Songti SC","Noto Serif CJK SC",serif;font-size:clamp(36px,5.7vw,76px);font-weight:900;line-height:1.25;letter-spacing:7px;color:#f9e6a3;transform:skew(-7deg);text-shadow:3px 3px #6e3526,5px 5px #252422;margin:0 0 6px}.subtitle{font-size:clamp(9px,1.2vw,14px);letter-spacing:5px;color:#fff4ca}.title-rule{width:50px;height:2px;background:#f9e6a3;margin:20px auto}.story{font-size:12px;letter-spacing:3px;color:#f4f1e7;margin:0 20px 22px}.start{border:1px solid #f9e6a3;background:#151e1bcf;padding:12px 28px;color:#fff4cb;font-size:13px;letter-spacing:4px;box-shadow:3px 3px #07120a;transition:background .2s,transform .2s}.start:hover{background:#b3452d;transform:translateY(-2px)}.start:before{content:"▶";font-size:9px;margin-right:12px}.enter-hint{font-size:9px;letter-spacing:2px;color:#fff1bd;margin-top:13px;animation:blink 2s steps(2,end) infinite}.overlay.pause{background:#0b140ed9}.overlay.pause .game-title{font-size:38px;transform:none;letter-spacing:5px}.overlay.pause .subtitle{margin:15px 20px 23px;font-size:11px;letter-spacing:2px;max-width:80%}
+    .screen-note{position:absolute;bottom:17px;left:0;right:0;color:#fff5d1;font-size:9px;letter-spacing:2px}.cabinet:fullscreen{width:100vw;min-width:0;max-width:none;height:100svh;padding:0;border:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#050805}.cabinet:fullscreen .screen{width:min(100vw,calc(100svh * 4/3));flex-shrink:0}.cabinet:fullscreen .mobile-controls{width:min(100%,600px)}.cabinet:fullscreen::backdrop{background:#000}.live{height:37px;display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:10px;letter-spacing:1.5px}.live span:first-child{color:#b8c4a9}.live i{display:inline-block;width:5px;height:5px;background:#8b9e70;margin-right:8px;border-radius:50%}
+    .instructions{display:grid;grid-template-columns:1fr 1fr 1.15fr;gap:35px;margin:20px 0 26px;padding-top:25px;border-top:1px solid var(--line)}.control{display:flex;align-items:center;gap:17px}.keys{display:flex;gap:5px;flex-shrink:0}.key{font-size:12px;min-width:28px;height:28px;display:inline-grid;place-items:center;border:1px solid #56604b;border-bottom-width:3px;background:#1b2119;color:#e0e3d2}.key.red{color:#ef8e77;border-color:#795145}.control strong{font-size:12px;letter-spacing:2px;font-weight:400;display:block}.control p{font:10px/1.8 "Songti SC",serif;color:var(--muted);margin:3px 0 0;letter-spacing:1px}.objective{border-left:1px solid var(--line);padding-left:25px}.objective small{font-size:9px;letter-spacing:2px;color:var(--red)}.objective p{margin:5px 0 0;font-size:11px;color:var(--muted);letter-spacing:1px}
+    footer{display:flex;justify-content:space-between;font-size:9px;color:#727d69;letter-spacing:2px;padding:14px 0 25px;border-top:1px solid var(--line)}.mobile-controls{display:none;justify-content:space-between;padding:18px 5px 5px;user-select:none;-webkit-user-select:none;touch-action:none}.dpad{display:grid;grid-template-columns:repeat(3,42px);grid-template-rows:repeat(2,39px);gap:4px}.pad{border:1px solid #56604b;background:#242b20;touch-action:none;color:#d7dfc9;font-size:19px;border-radius:3px}.pad[data-key=ArrowUp]{grid-column:2}.pad[data-key=ArrowLeft]{grid-column:1;grid-row:2}.pad[data-key=ArrowDown]{grid-column:2;grid-row:2}.pad[data-key=ArrowRight]{grid-column:3;grid-row:2}.action-pad{display:flex;align-items:center;gap:12px}.action-pad .pad{width:52px;height:52px;border-radius:50%;font-size:12px;background:#843a2b;border-color:#b3644a}.pad.active{background:#b76e39;transform:translateY(2px)}
+    @keyframes blink{50%{opacity:.35}}@media(min-width:1600px){.cabinet{max-width:960px}}@media(max-width:760px){.page{width:calc(100% - 28px)}header{height:80px}.brand{gap:10px}.brand h1{font-size:20px}.brand small{font-size:8px;letter-spacing:1px}.edition{font-size:8px;letter-spacing:1px}.edition b{font-size:10px}.cabinet{min-width:0;width:100%;padding:6px}.toolbar{height:54px}.tools{gap:13px}.tool{font-size:10px}.tool svg{display:none}.chapter{font-size:9px;letter-spacing:1px}.game-title{font-size:clamp(35px,9vw,62px)}.eyebrow{font-size:8px;margin-bottom:9px}.subtitle{font-size:9px;letter-spacing:3px}.title-rule{margin:12px auto}.story{font-size:10px;margin-bottom:15px}.start{padding:10px 20px;font-size:11px}.screen-note{bottom:10px;font-size:7px}.instructions{grid-template-columns:1fr 1fr;gap:16px;margin-top:14px;padding-top:18px}.control{gap:10px}.objective{grid-column:1/-1;border-left:0;padding:10px 0 0}.control p{font-size:9px}.key{min-width:23px;height:25px;font-size:10px}.live{font-size:8px;letter-spacing:.5px}footer{font-size:8px;letter-spacing:1px}.mobile-controls{display:flex}.overlay.pause .game-title{font-size:26px}}
+    @media(pointer:coarse){.mobile-controls{display:flex}}@media(pointer:coarse),(max-width:760px){.cabinet:fullscreen .screen{width:min(100vw,calc((100svh - 110px) * 4/3));}}@media(prefers-reduced-motion:reduce){.enter-hint{animation:none}.start{transition:none}}
+  
+    /* 原版画面由 JSNES 直接输出，移除上一版覆盖图像的扫描线。 */
+    .screen{background:#000}.screen:after{display:none}#nes-host{position:absolute;inset:0}#boot-preview{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated}#boot-preview[hidden]{display:none}
+    .launchbar{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:17px 0 6px}.original-tag{font-size:10px;letter-spacing:1px;border:1px solid #6b775b;color:#ccdab5;padding:4px 7px;margin-right:12px}.launch-note{font-size:10px;color:var(--muted);letter-spacing:1px}.launch-actions{display:flex;align-items:center;gap:20px}.launch-actions .start{font-size:11px;padding:9px 18px;letter-spacing:1px}.launch-actions .start:before{display:none}.overlay.pause .story{margin-top:14px;font-size:11px;letter-spacing:2px}.tools{gap:15px}
+    @media(max-width:760px){.launchbar{align-items:flex-start;flex-direction:column;gap:14px}.launch-note{font-size:9px}.launch-actions{width:100%;justify-content:space-between}.original-tag{margin-right:7px}.toolbar .tools{gap:11px}.edition{font-size:7px}.instructions{grid-template-columns:1fr}.objective{grid-column:auto}.control p{font-size:10px}.screen .story{margin:12px 5px 15px;font-size:9px;letter-spacing:1px}}
+  </style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div class="brand"><div class="seal" aria-hidden="true">影</div><div><h1>影子传说</h1><small>THE LEGEND OF KAGE</small></div></div>
+    <div class="edition"><b>忍の道 · 再启</b>FC ORIGINAL / NES PLAYER</div>
+  </header>
+  <main>
+    <div class="toolbar"><div class="chapter"><span class="dot"></span><span id="chapter">FC 原版 / 影の伝説</span></div><div class="tools">
+      <button class="tool" id="sound" aria-pressed="true" title="切换声音（M）">♪ 声音 开</button>
+      <button class="tool" id="pause" disabled title="暂停或继续（P / Esc）">Ⅱ 暂停</button>
+      <button class="tool" id="reset" disabled title="重启原版游戏">↻ 重启</button>
+      <button class="tool" id="fullscreen" title="全屏（F）">⛶ 全屏</button>
+    </div></div>
+    <div class="cabinet" id="cabinet">
+      <div class="screen" id="screen">
+        <div id="nes-host"></div>
+        <img id="boot-preview" src="data:image/png;base64,__TITLE_BASE64__" alt="从原版游戏数据导出的影子传说标题画面">
+        <div class="overlay pause" id="overlay" hidden>
+          <div class="eyebrow">THE LEGEND OF KAGE</div>
+          <h2 class="game-title">一息 · 再战</h2>
+          <p class="story">原版进度已保留，继续你的冒险。</p>
+          <button class="start" id="resume">继续游戏</button>
+          <div class="enter-hint">P / ENTER TO CONTINUE</div>
+        </div>
+      </div>
+      <div class="mobile-controls" aria-label="触屏控制器">
+        <div class="dpad"><button class="pad" data-key="ArrowUp" aria-label="跳跃或攀树">↑</button><button class="pad" data-key="ArrowLeft" aria-label="向左">←</button><button class="pad" data-key="ArrowDown" aria-label="下落">↓</button><button class="pad" data-key="ArrowRight" aria-label="向右">→</button></div>
+        <div class="action-pad"><button class="pad" data-key="KeyZ" aria-label="挥刀">刀 Z</button><button class="pad" data-key="KeyX" aria-label="飞镖">镖 X</button></div>
+      </div>
+    </div>
+    <div class="launchbar"><div><span class="original-tag">FC 原版</span><span class="launch-note">原版图像 · 原版道具 · 原版关卡 · 原版声音</span></div><div class="launch-actions"><button class="tool" id="select" disabled>选择 SELECT</button><button class="start" id="start" disabled>正在准备…</button></div></div>
+    <div class="live"><span><i></i><span id="status" role="status" aria-live="polite">正在准备原版游戏…</span></span><span id="record">256 × 240 / 60 FPS</span></div>
+    <div class="instructions">
+      <div class="control"><div class="keys"><span class="key">←</span><span class="key">↑</span><span class="key">→</span></div><div><strong>飞檐走壁</strong><p>左右移动 · 向上高跳 / 攀树<br>空格跳跃 · 向下穿过树枝</p></div></div>
+      <div class="control"><div class="keys"><span class="key red">Z</span><span class="key red">X</span></div><div><strong>刀光 · 手里剑</strong><p>Z 近身挥刀 · X 投掷飞镖<br>Enter 开始 / 暂停 · Shift 选择</p></div></div>
+      <div class="objective"><small>MISSION / 救出雾姬</small><p id="mission">穿过树林、护城河、城墙与天守阁。<br>拾取原版卷轴与宝珠，救出雾姬。</p></div>
+    </div>
+  </main>
+  <footer><span>献给记忆里的红白机时光</span><span>POWERED BY JSNES · FC ORIGINAL</span></footer>
+</div>
+<!-- JSNES 2.1.0 · Apache-2.0；许可和原版素材来源见 assets/legend-of-kage/SOURCES.md -->
+<!-- 第三方软件许可；JSNES 2.1.0 的离线音频兼容修改由本项目打包器应用。
+__JSNES_LICENSE__
+-->
+<script>__JSNES_SOURCE__</script>
+<script id="rom-data" type="application/octet-stream">__ROM_BASE64__</script>
+<script>__PLAYER_SOURCE__</script>
+</body>
+</html>
